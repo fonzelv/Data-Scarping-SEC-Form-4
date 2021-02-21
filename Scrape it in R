@@ -1,3 +1,4 @@
+
 install.packages('rvest')
 install.packages('xlsx')
 install.packages('writexl')
@@ -6,29 +7,6 @@ install.packages("xml2")
 library('xml2')
 library('rvest')
 library('tidyverse')  
-
-
-tabella = data.frame()
-
-#Setting up the URL - it looks for the first 1000 results in page 1
-#Wiki_tickers is just a CSV with all the tickers you need to scrape, in my case it was the S&P500 list
-for (tk in Wiki_tickers)
-{link = paste0("http://openinsider.com/screener?s=", tk, "&o=&pl=&ph=&ll=&lh=&fd=0&fdr=&td=0&tdr=&fdlyl=&fdlyh=&daysago=&xp=1&xs=1&vl=&vh=&ocl=&och=&sic1=-1&sicl=100&sich=9999&grp=0&nfl=&nfh=&nil=&nih=&nol=&noh=&v2l=&v2h=&oc2l=&oc2h=&sortcol=0&cnt=900&page=1")}
-  
-for (i in link)
-{page <- read_html(i)
-
-
- name =  page
- pagenode = html_node(name, 'table.tinytable')
-  tryCatch({
-  tables = html_table(pagenode, header=NA)}, 
-  error=function(e) {NA})
-tabella = rbind(tabella, tables)}
-
-  print(paste("page:", tk))  
-
-write.csv(tabella,"INSERT FOLDER PATH")
 
 tabella = data.frame()
 
@@ -40,4 +18,15 @@ for (tk in Wiki_tickers)
 for (i in link)
   {page <- read_html(i)
 
+
+name =  page
+ pagenode = html_node(name, 'table.tinytable')
+  tryCatch({
+  tables = html_table(pagenode, header=NA)}, 
+  error=function(e) {NA})
+tabella = rbind(tabella, tables)}
+
+print(paste("page:", tk))
+
+write.csv(tabella,"/Users/alessandro/Desktop/Scraping/scraped1.csv")
 
